@@ -15,12 +15,13 @@ namespace CRUDMahasiswaADO
 {
     public partial class Form1 : Form
     {
+        private readonly SqlConnection conn;
+        private readonly string connectionString =
+            "Data Source=DESKTOP-A1J1BDF\\SYEERA;Initial Catalog=DBAkademikADO;Integrated Scurity=True";
         public Form1()
         {
             InitializeComponent();
-            private readonly SqlConnection conn;
-            private readonly string connectionString =
-                "Data Source=DESKTOP-A1J1BDF\\SYEERA;Initial Catalog=DBAkademikADO;Integrated Scurity=True";
+            conn = new SqlConnection(connectionString);
         }
 
         private void label1_Click(object sender, EventArgs e)
