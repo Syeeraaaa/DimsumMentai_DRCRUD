@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37012.4 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRUDMahasiswaADO", "CRUDMahasiswaADO\CRUDMahasiswaADO.csproj", "{0FCF1FB5-DDF5-43A6-9D70-3F04BCD3A494}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0FCF1FB5-DDF5-43A6-9D70-3F04BCD3A494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FCF1FB5-DDF5-43A6-9D70-3F04BCD3A494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FCF1FB5-DDF5-43A6-9D70-3F04BCD3A494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FCF1FB5-DDF5-43A6-9D70-3F04BCD3A494}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54D39E30-BFB1-493C-A031-09EA69A2A0FE}
+	EndGlobalSection
+EndGlobal
