@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Drawing.Text;
 
 
 namespace CRUDMahasiswaADO
@@ -17,6 +18,9 @@ namespace CRUDMahasiswaADO
         public Form1()
         {
             InitializeComponent();
+            private readonly SqlConnection conn;
+            private readonly string connectionString =
+                "Data Source=DESKTOP-A1J1BDF\\SYEERA;Initial Catalog=DBAkademikADO;Integrated Scurity=True";
         }
 
         private void label1_Click(object sender, EventArgs e)
