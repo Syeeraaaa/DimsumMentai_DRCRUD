@@ -17,7 +17,7 @@ namespace CRUDMahasiswaADO
     {
         private readonly SqlConnection conn;
         private readonly string connectionString =
-            "Data Source=DESKTOP-A1J1BDF\\SYEERA;Initial Catalog=DBAkademikADO;Integrated Scurity=True";
+            "Data Source=DESKTOP-A1J1BDF\\SYEERA;Initial Catalog=DBAkademikADO;Integrated Security=True";
         public Form1()
         {
             InitializeComponent();
@@ -95,6 +95,77 @@ namespace CRUDMahasiswaADO
             {
                 MessageBox.Show("Gagal menampilkan data: " + ex.Message);
             }
+        }
+
+        private void btnInsert_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (conn.State == System.Data.ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+
+                if (txtNIM.Text == "")
+                {
+                    MessageBox.Show("NIM harus diisi!");
+                    txtNIM.Focus();
+                    return;
+                }
+
+                if (txtNama.Text == "")
+                {
+                    MessageBox.Show("Nama harus diisi!");
+                    txtNama.Focus();
+                    return;
+                }
+
+                if (cmbJK.Text == "")
+                {
+                    MessageBox.Show("Jenis Kelamin haris dipilih");
+                    cmbJK.Focus();
+                    return;
+                }
+
+                if (txtKodeProdi.Text == "")
+                {
+                    MessageBox.Show("Kode Prodi harus diisi!");
+                    txtKodeProdi.Focus();
+                    return;
+                }
+
+                string query = @"Insert Into Mahasiswa
+                                (NIM, Nama, JenisKelamin, TanggalLahir, Alamat, KodeProdi, TanggalDaftar)
+                                values (@NIM, @Nama, @JK, @TanggalLahir, @Alamat, @KodeProdi, @TanggalDaftar)";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@NIM", txtNIM.Text);
+                cmd.Parameters.AddWithValue("@Nama", txtNama.Text);
+                cmd.Parameters.AddWithValue("@JK", cmbJK.Text);
+                cmd.Parameters.AddWithValue("@TanggalLahir", dtpTanggalLahir.Value.Date);
+                cmd.Parameters.AddWithValue("@Alamat", txtAlamat.Text);
+                cmd.Parameters.AddWithValue("@KodeProdi", txtKodeProdi.Text);
+                cmd.Parameters.AddWithValue("@TanggalDaftar", DateTime.Now);
+
+                int result = cmd.ExecuteNonQuery();
+
+                if (result > 0)
+                {
+                    MessageBox.Show("Data Mahasiswa berhasil ditambahkan");
+                    ClearForm();
+                    btnLoad.PerformClick();
+                }
+                else
+                {
+                    MessageBox.Show("Data gagal ditambahkan!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Terjadi Kesalahan: " + ex.Message);
+            }
+
         }
     }
 }

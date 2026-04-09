@@ -35,7 +35,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cmbJK = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtAlamat = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.dtpTanggalLahir = new System.Windows.Forms.DateTimePicker();
             this.label6 = new System.Windows.Forms.Label();
@@ -111,12 +111,12 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Alamat";
             // 
-            // textBox2
+            // txtAlamat
             // 
-            this.textBox2.Location = new System.Drawing.Point(167, 252);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(258, 26);
-            this.textBox2.TabIndex = 8;
+            this.txtAlamat.Location = new System.Drawing.Point(167, 252);
+            this.txtAlamat.Name = "txtAlamat";
+            this.txtAlamat.Size = new System.Drawing.Size(258, 26);
+            this.txtAlamat.TabIndex = 8;
             // 
             // label5
             // 
@@ -178,6 +178,7 @@
             this.btnInsert.TabIndex = 15;
             this.btnInsert.Text = "Menambahkan Data";
             this.btnInsert.UseVisualStyleBackColor = true;
+            this.btnInsert.Click += new System.EventHandler(this.btnInsert_Click);
             // 
             // btnUpdate
             // 
@@ -222,7 +223,7 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dtpTanggalLahir);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.txtAlamat);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cmbJK);
             this.Controls.Add(this.label3);
@@ -248,7 +249,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cmbJK;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtAlamat;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DateTimePicker dtpTanggalLahir;
         private System.Windows.Forms.Label label6;
