@@ -15,9 +15,10 @@ using static System.Net.WebRequestMethods;
 
 namespace CRUDMahasiswaADO
 {
-    DAL dbLogic = new DAL();
+    
     public partial class Form1 : Form
     {
+        DAL dbLogic = new DAL();
         private BindingSource bindingSource = new BindingSource();
         private DataTable dtMahasiswa = new DataTable();
         private readonly SqlConnection conn;
@@ -244,15 +245,29 @@ namespace CRUDMahasiswaADO
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                DataRow row = ((DataRowView)bindingSource1[e.RowIndex]).Row;
 
-                txtNIM.Text = row.Cells["NIM"].Value.ToString();
-                txtNama.Text = row.Cells["Nama"].Value.ToString();
-                cmbJK.Text = row.Cells["JenisKelamin"].Value.ToString();
-                dtpTanggalLahir.Value = Convert.ToDateTime(row.Cells["TanggalLahir"].Value);
-                txtAlamat.Text = row.Cells["Alamat"].Value.ToString();
-                txtKodeProdi.Text = row.Cells["KodeProdi"].Value.ToString();
+                txtNIM.Text = row[0].ToString();
+                txtNama.Text = row[1].ToString();
+                cmbJK.Text = row[2].ToString();
+                dtpTanggalLahir.Value = Convert.ToDateTime(row[3]);
+                txtAlamat.Text = row[4].ToString();
+                txtKodeProdi.Text = row[6].ToString();
 
+                if (row[5] != DBNull.Value)
+                {
+                    byte[] imgBytes = (byte[])row[5];
+                    using (MemoryStream ms = new MemoryStream(imgBytes))
+                    {
+                        fotoMhs.Image = Image.FromStream(ms);
+                        fotoMhs.SizeMode = PictureBoxSizeMode.StretchImage;
+                    }
+                }
+                else
+                {
+                    fotoMhs.Image = null;
+                }
+                txtNIM.Enabled = false;
             }
         }
 
@@ -288,7 +303,7 @@ namespace CRUDMahasiswaADO
         {
             try
             {
-                dbLogic.ResetData();
+                dbLogic.resetData();
                 MessageBox.Show("Data berhasil direset!");
                 LoadData();
             }
@@ -307,7 +322,7 @@ namespace CRUDMahasiswaADO
         {
             try
             {
-                dbLogic.testInjection(txtNIM.Text);
+                dbLogic.testInject(txtNIM.Text);
                 LoadData();
             }
             catch (SqlException ex)
@@ -320,7 +335,7 @@ namespace CRUDMahasiswaADO
                 else
                 {
                     simpanLog(ex.Message);
-                    MessageBox.Show("SQL ERROR: "+ ex.Message)
+                    MessageBox.Show("SQL ERROR: " + ex.Message);
                 }
             }
             catch (Exception ex)
