@@ -325,6 +325,10 @@ namespace CRUDMahasiswaADO
             fotoMhs.Image = null;
             txtNIM.Focus();
         }
+        public void simpanLog(string message)
+        {
+            dbLogic.InsertLog(message);
+        }
 
 
         private void cmbJK_SelectedIndexChanged(object sender, EventArgs e)
