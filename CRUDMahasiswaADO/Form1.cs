@@ -226,9 +226,9 @@ namespace CRUDMahasiswaADO
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (dg = DialogResult.Yes)
+                if (dg == DialogResult.Yes)
                 {
-                    dbLogic.DeleteMha(txtNIM.Text);
+                    dbLogic.DeleteMhs(txtNIM.Text);
                     MessageBox.Show("Data mahasiswa berhasil dihapus");
                     ClearForm();
                     btnLoad.PerformClick();
@@ -288,19 +288,14 @@ namespace CRUDMahasiswaADO
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = @" if object_id('dbo.Mahasiswa_Backup') is not null 
-                            begin delete from dbo.Mahasiswa; insert into dbo.Mahasiswa select * from dbo.Mahasiswa_backup; end";
-
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                }
+                dbLogic.ResetData();
                 MessageBox.Show("Data berhasil direset!");
                 LoadData();
+            }
+            catch (SqlException ex)
+            {
+                simpanLog(ex.Message);
+                MessageBox.Show("Sql Error: " + ex.Message);
             }
             catch (Exception ex)
             {
