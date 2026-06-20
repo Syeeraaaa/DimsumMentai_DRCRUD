@@ -190,41 +190,28 @@ namespace CRUDMahasiswaADO
         {
             try
             {
-                //if (conn.State == System.Data.ConnectionState.Closed)
-                //{
-                    //conn.Open();
-                //}
-
-                //string query = @"Update Mahasiswa set Nama = @Nama, JenisKelamin = @JK, TanggalLahir = @TanggalLahir,
-                //Alamat = @Alamat,
-                //KodeProdi = @KodeProdi where NIM = @NIM";
-
-                using (SqlCommand cmd = new SqlCommand("sp_UpdateMahasiswaa", conn))
+                byte[] ConvertImageToBytes(PictureBox pb)
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@NIM", txtNIM.Text);
-                    cmd.Parameters.AddWithValue("@Nama", txtNama.Text);
-                    cmd.Parameters.AddWithValue("@JenisKelamin", cmbJK.Text);
-                    cmd.Parameters.AddWithValue("@TanggalLahir", dtpTanggalLahir.Value.Date);
-                    cmd.Parameters.AddWithValue("@Alamat", txtAlamat.Text);
-                    cmd.Parameters.AddWithValue("@KodeProdi", txtKodeProdi.Text);
-
-                    conn.Open();
-                    int result = cmd.ExecuteNonQuery();
-                    if (result < 0)
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        MessageBox.Show("Data berhasil diupdate!");
-                        ClearForm();
-                        btnLoad.PerformClick();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Data tidak ditemukan!");
+                        pb.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        return ms.ToArray();
                     }
                 }
+                byte[] imgBytes = ConvertImageToBytes(fotoMhs);
+                dbLogic.UpdateMhs(txtNIM.Text, txtNama.Text, txtAlamat.Text, cmbJK.Text, dtpTanggalLahir.Value.Date, txtKodeProdi.Text, imgBytes);
+                MessageBox.Show("Data mahasiswa berhasil diubah");
+                ClearForm();
+                btnLoad.PerformClick();
+            }
+            catch (SqlException ex)
+            {
+                simpanLog(ex.Message);
+                MessageBox.Show("SQL Error: " + ex.Message);
             }
             catch (Exception ex)
             {
+                simpanLog(ex.Message);
                 MessageBox.Show("Terjadi Kesalahan: " + ex.Message);
             }
         }
@@ -233,36 +220,18 @@ namespace CRUDMahasiswaADO
         {
             try
             {
-                if (conn.State == System.Data.ConnectionState.Closed)
-                {
-                    conn.Open();
-                }
-
-                DialogResult resultConfirm = MessageBox.Show(
+                DialogResult dg = MessageBox.Show(
                     "Yakin ingin menghapus data?",
                     "Konfirmasi",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (resultConfirm == DialogResult.Yes)
+                if (dg = DialogResult.Yes)
                 {
-                    //string query = "delete from Mahasiswa where NIM = @NIM";
-                    //SqlCommand cmd = new SqlCommand(query, conn);
-                    //cmd.Parameters.AddWithValue("@NIM", txtNIM.Text);
-
-                    //int result = cmd.ExecuteNonQuery();
-                    using (SqlCommand cmd = new SqlCommand("sp_DeleteMahasiswa", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@NIM", SqlDbType.Char, 11).Value = txtNIM.Text;
-                        //conn.Open();
-                        int rowsAffected = cmd. ExecuteNonQuery();
-
-                        if (rowsAffected < 0)
-                            MessageBox.Show("Data berhasil dihapus!");
-                        else
-                            MessageBox.Show("Data tidak ditemukan!");
-                    }
+                    dbLogic.DeleteMha(txtNIM.Text);
+                    MessageBox.Show("Data mahasiswa berhasil dihapus");
+                    ClearForm();
+                    btnLoad.PerformClick();
                 }
             }
             catch (Exception ex)
