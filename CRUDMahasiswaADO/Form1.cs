@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -154,68 +155,35 @@ namespace CRUDMahasiswaADO
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            SqlConnection conn = new SqlConnection(connectionString);
-
-            conn.Open();
-
-            SqlTransaction trans = conn.BeginTransaction();
+            
             try
             {
-
-                
-                    //conn.Open();
-                    //string query = @"insert into Mahasiswa (NIM, Nama, JenisKelamin, TanggalLahir, Alamat, KodeProdi, TanggalDaftar)
-                    //values (@NIM, @Nama, @JK, @TanggalLahir, @Alamat, @KodeProdi, @TanggalDaftar)";
-
-
+                byte[] ConvertImageToBytes(PictureBox pb)
+                {
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        SqlCommand cmd = new SqlCommand("sp_InsertMahasiswa", conn, trans);
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@NIM", txtNIM.Text);
-
-                        cmd.Parameters.AddWithValue("@Nama", txtNama.Text);
-                        cmd.Parameters.AddWithValue("@JenisKelamin", cmbJK.Text);
-                        cmd.Parameters.AddWithValue("@TanggalLahir", dtpTanggalLahir.Value.Date);
-                        cmd.Parameters.AddWithValue("@Alamat", txtAlamat.Text);
-                        cmd.Parameters.AddWithValue("@KodeProdi", txtKodeProdi.Text);
-                        cmd.Parameters.AddWithValue("@TanggalDafat", DateTime.Now);
-                        
-                        cmd.ExecuteNonQuery();
-
-                    SqlCommand cmdLog = new SqlCommand(@"insert into LogAktivitasSalah (aktivitas, waktu) values (@aktivitas,getdate())",
-                        conn, trans);
-
-                    cmdLog.Parameters.AddWithValue("@aktivitas", "insert Mahasiswa : " + txtNIM.Text);
-
-                    cmdLog.ExecuteNonQuery();
-
-                    trans.Commit();
-
-                    MessageBox.Show("Data berhasil disimpan!");
-
-                    LoadData();
+                        pb.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        return ms.ToArray();
                     }
-                
+                }
+                byte[] imgBytes = ConvertImageToBytes(fotoMhs);
+                dbLogic.InsertMhs(txtNIM.Text, txtNama.Text, txtAlamat.Text, cmbJK.Text, dtpTanggalLahir.Value.Date, txtKodeProdi.Text, imgBytes);
+                MessageBox.Show("Data Mahasiswa berhasil ditambahkan");
+                ClearForm();
+                LoadData();
             }
             catch (SqlException ex)
             {
-                trans.Rollback();
-
+               
                 SimpanLog("Rollback Insert : " + ex.Message);
 
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("SQL Error: " +ex.Message);
             }
             catch (Exception ex)
             {
-                trans.Rollback();
                 SimpanLog("General Error : " + ex.Message);
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("General Error: " + ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
-
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
