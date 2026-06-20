@@ -129,5 +129,24 @@ namespace CRUDMahasiswaADO
             }
 
         }
+
+        private void btn_Load_Click(object sender, EventArgs e)
+        {
+            button = 1;
+            loadDataChart();
+        }
+
+        private void btn_Reset_Click(object sender, EventArgs e)
+        {
+            button = 0;
+            loadDataChart();
+        }
+
+        private void btn_Data_Mhs_Click(object sender, EventArgs e)
+        {
+            Form1 frm1 = new Form1();
+            frm1.Show();
+            this.Hide();
+        }
     }
 }
